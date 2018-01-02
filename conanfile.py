@@ -1,15 +1,15 @@
 from conans import ConanFile, CMake, tools
 
 
-class spdlogConan(ConanFile):
+class Log4cplusConan(ConanFile):
     name = "log4cplus"
     version = "1.2.0"
-    license = "2-clause BSD license/Apache license 2.0"
+    license = "BSD 2-clause, Apache-2.0"
     url = "https://github.com/bincrafters/conan-log4cplus"
+    generators = 'cmake'
     settings = 'os', 'compiler', 'build_type', 'arch'
     options = {'shared': [True, False]}
     default_options = 'shared=False'
-    generators = 'cmake'
 
     def source(self):
         base_url = "https://github.com/log4cplus/log4cplus/archive"
