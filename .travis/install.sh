@@ -22,5 +22,5 @@ else
 	sudo apt-get install -y nasm autoconf dh-autoreconf
 fi
 
-pip install conan_package_tools # It install conan too
+pip install conan_package_tools  bincrafters_package_tools
 conan user
