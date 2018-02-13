@@ -6,7 +6,7 @@ import os
 
 class Log4cplusConan(ConanFile):
     name = "log4cplus"
-    version = "2.0.0"
+    version = "1.2.0"
     description = "simple to use C++ logging API, modelled after the Java log4j API"
     url = "https://github.com/bincrafters/conan-log4cplus"
     license = "BSD 2-clause, Apache-2.0"
@@ -38,7 +38,7 @@ class Log4cplusConan(ConanFile):
         build_dir = os.path.join(self.build_subfolder, self.source_subfolder)
         build_dir_include = os.path.join(build_dir, "include")
 
-        self.copy(pattern="LICENSE", dst="license", src=self.source_subfolder)
+        self.copy(pattern="LICENSE", dst="licenses", src=self.source_subfolder)
         self.copy(pattern="*", dst="include", src=include_folder)
         self.copy(pattern="*", dst="include", src=build_dir_include)
         self.copy(pattern="*.dll", dst="bin", keep_path=False)
