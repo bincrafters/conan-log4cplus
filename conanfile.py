@@ -25,29 +25,27 @@ class Log4cplusConan(ConanFile):
         tools.get("{0}/archive/{1}.tar.gz".format(source_url, archive_name))
         extracted_dir = self.name + "-" + archive_name
         os.rename(extracted_dir, self.source_subfolder)
-        
+
     def build(self):
         cmake = CMake(self)
         cmake.configure(build_dir=self.build_subfolder)
         cmake.build()
 
     def package(self):
-        include_dir = os.path.join(self.source_subfolder, "include")
+        # If the CMakeLists.txt has a proper install method, the steps below may be redundant
+        # If so, you can replace all the steps below with the word "pass"
+        include_folder = os.path.join(self.source_subfolder, "include")
         build_dir = os.path.join(self.build_subfolder, self.source_subfolder)
         build_dir_include = os.path.join(build_dir, "include")
-        
-        self.copy("*.h", dst="include", src=include_dir)
-        self.copy("*.hxx", dst="include", src=include_dir)
-        # self.copy("*.hxx", dst="include/boost", src=os.path.join(include_dir, "boost")
-        #self.copy("*.h", dst="include/config", src="log4cplus-REL_1_2_0/include/config")
-        # self.copy("*.h", dst="include/helpers", src="log4cplus-REL_1_2_0/include/helpers")
-        # self.copy("*.h", dst="include/internal", src="log4cplus-REL_1_2_0/include/internal")
-        # self.copy("*.h", dst="include/spi", src="log4cplus-REL_1_2_0/include/spi")
-        # self.copy("*.h", dst="include/thread", src="log4cplus-REL_1_2_0/include/thread")
-        # self.copy("*.h", dst="include/thread/impl", src="log4cplus-REL_1_2_0/include/thread/impl")
-        # self.copy("*.hxx", dst="include/log4cplus/config", src="include/log4cplus/config")
-        self.copy("*.a", dst="lib", src=self.build_subfolder, keep_path=False)
-        self.copy("*.hxx", dst="include", src=build_dir_include)
+
+        self.copy(pattern="LICENSE", dst="license", src=self.source_subfolder)
+        self.copy(pattern="*", dst="include", src=include_folder)
+        self.copy(pattern="*", dst="include", src=build_dir_include)
+        self.copy(pattern="*.dll", dst="bin", keep_path=False)
+        self.copy(pattern="*.lib", dst="lib", keep_path=False)
+        self.copy(pattern="*.a", dst="lib", keep_path=False)
+        self.copy(pattern="*.so*", dst="lib", keep_path=False)
+        self.copy(pattern="*.dylib", dst="lib", keep_path=False)
 
     def package_info(self):
         self.cpp_info.libs = tools.collect_libs(self)
