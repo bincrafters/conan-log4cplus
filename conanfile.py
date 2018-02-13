@@ -51,3 +51,6 @@ class Log4cplusConan(ConanFile):
         self.cpp_info.libs = tools.collect_libs(self)
         if self.settings.os == "Linux":
             self.cpp_info.libs.extend(["dl", "pthread"])
+
+        if self.settings.compiler == "Visual Studio":
+            self.cpp_info.libs.append('Ws2_32')
