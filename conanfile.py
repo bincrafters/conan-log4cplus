@@ -4,6 +4,7 @@
 from conans import ConanFile, CMake, tools
 import os
 
+
 class Log4cplusConan(ConanFile):
     name = "log4cplus"
     version = "1.2.0"
