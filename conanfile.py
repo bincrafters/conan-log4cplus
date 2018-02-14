@@ -4,6 +4,7 @@
 from conans import ConanFile, CMake, tools
 import os
 
+
 class Log4cplusConan(ConanFile):
     name = "log4cplus"
     version = "1.2.0"
@@ -16,8 +17,13 @@ class Log4cplusConan(ConanFile):
     source_subfolder = "source_subfolder"
     build_subfolder = "build_subfolder"
     settings = 'os', 'compiler', 'build_type', 'arch'
-    options = {'shared': [True, False]}
-    default_options = 'shared=False'
+    options = {'shared': [True, False], "fPIC": [True, False]}
+    default_options = 'shared=False', 'fPIC=True'
+    short_paths = True
+
+    def config(self):
+        if self.settings.compiler == 'Visual Studio':
+            del self.options.fPIC
 
     def source(self):
         source_url = "https://github.com/log4cplus/log4cplus"
@@ -25,27 +31,22 @@ class Log4cplusConan(ConanFile):
         tools.get("{0}/archive/{1}.tar.gz".format(source_url, archive_name))
         extracted_dir = self.name + "-" + archive_name
         os.rename(extracted_dir, self.source_subfolder)
+        if self.settings.compiler == 'Visual Studio':
+            # error C3861: 'FreeAddrInfoA': identifier not found
+            # see also https://github.com/log4cplus/log4cplus/issues/163
+            tools.replace_in_file(os.path.join(self.source_subfolder, 'CMakeLists.txt'),
+                                  "_WIN32_WINNT 0x0500", "_WIN32_WINNT 0x0502")
 
     def build(self):
         cmake = CMake(self)
+        if self.settings.compiler != 'Visual Studio':
+            cmake.definitions['CMAKE_POSITION_INDEPENDENT_CODE'] = self.options.fPIC
         cmake.configure(build_dir=self.build_subfolder)
         cmake.build()
+        cmake.install()
 
     def package(self):
-        # If the CMakeLists.txt has a proper install method, the steps below may be redundant
-        # If so, you can replace all the steps below with the word "pass"
-        include_folder = os.path.join(self.source_subfolder, "include")
-        build_dir = os.path.join(self.build_subfolder, self.source_subfolder)
-        build_dir_include = os.path.join(build_dir, "include")
-
         self.copy(pattern="LICENSE", dst="licenses", src=self.source_subfolder)
-        self.copy(pattern="*", dst="include", src=include_folder)
-        self.copy(pattern="*", dst="include", src=build_dir_include)
-        self.copy(pattern="*.dll", dst="bin", keep_path=False)
-        self.copy(pattern="*.lib", dst="lib", keep_path=False)
-        self.copy(pattern="*.a", dst="lib", keep_path=False)
-        self.copy(pattern="*.so*", dst="lib", keep_path=False)
-        self.copy(pattern="*.dylib", dst="lib", keep_path=False)
 
     def package_info(self):
         self.cpp_info.libs = tools.collect_libs(self)
