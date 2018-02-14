@@ -17,8 +17,12 @@ class Log4cplusConan(ConanFile):
     source_subfolder = "source_subfolder"
     build_subfolder = "build_subfolder"
     settings = 'os', 'compiler', 'build_type', 'arch'
-    options = {'shared': [True, False]}
-    default_options = 'shared=False'
+    options = {'shared': [True, False], "fPIC": [True, False]}
+    default_options = 'shared=False', 'fPIC=True'
+
+    def config(self):
+        if self.settings.compiler == 'Visual Studio':
+            del self.options.fPIC
 
     def source(self):
         source_url = "https://github.com/log4cplus/log4cplus"
@@ -29,6 +33,8 @@ class Log4cplusConan(ConanFile):
 
     def build(self):
         cmake = CMake(self)
+        if self.settings.compiler != 'Visual Studio':
+            cmake.definitions['CMAKE_POSITION_INDEPENDENT_CODE'] = self.options.fPIC
         cmake.configure(build_dir=self.build_subfolder)
         cmake.build()
         cmake.install()
