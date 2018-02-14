@@ -19,6 +19,7 @@ class Log4cplusConan(ConanFile):
     settings = 'os', 'compiler', 'build_type', 'arch'
     options = {'shared': [True, False], "fPIC": [True, False]}
     default_options = 'shared=False', 'fPIC=True'
+    short_paths = True
 
     def config(self):
         if self.settings.compiler == 'Visual Studio':
