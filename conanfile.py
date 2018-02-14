@@ -7,7 +7,7 @@ import os
 
 class Log4cplusConan(ConanFile):
     name = "log4cplus"
-    version = "1.2.0"
+    version = "1.2.1"
     description = "simple to use C++ logging API, modelled after the Java log4j API"
     url = "https://github.com/bincrafters/conan-log4cplus"
     license = "BSD 2-clause, Apache-2.0"
@@ -31,11 +31,6 @@ class Log4cplusConan(ConanFile):
         tools.get("{0}/archive/{1}.tar.gz".format(source_url, archive_name))
         extracted_dir = self.name + "-" + archive_name
         os.rename(extracted_dir, self.source_subfolder)
-        if self.settings.compiler == 'Visual Studio':
-            # error C3861: 'FreeAddrInfoA': identifier not found
-            # see also https://github.com/log4cplus/log4cplus/issues/163
-            tools.replace_in_file(os.path.join(self.source_subfolder, 'CMakeLists.txt'),
-                                  "_WIN32_WINNT 0x0500", "_WIN32_WINNT 0x0502")
 
     def build(self):
         cmake = CMake(self)
