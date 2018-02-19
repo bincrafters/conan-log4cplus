@@ -37,6 +37,9 @@ class Log4cplusConan(ConanFile):
         if self.settings.compiler != 'Visual Studio':
             cmake.definitions['CMAKE_POSITION_INDEPENDENT_CODE'] = self.options.fPIC
         cmake.configure(build_dir=self.build_subfolder)
+        cmake.definitions['LOG4CPLUS_BUILD_TESTING'] = 'False'
+        cmake.definitions['WITH_UNIT_TESTS'] = 'False'
+        cmake.definitions["LOG4CPLUS_ENABLE_DECORATED_LIBRARY_NAME"] = 'False'
         cmake.build()
         cmake.install()
 
