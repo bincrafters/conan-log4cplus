@@ -7,7 +7,7 @@ import os
 
 class Log4cplusConan(ConanFile):
     name = "log4cplus"
-    version = "1.2.1"
+    version = "2.0.0-rc2"
     description = "simple to use C++ logging API, modelled after the Java log4j API"
     url = "https://github.com/bincrafters/conan-log4cplus"
     license = "BSD 2-clause, Apache-2.0"
@@ -26,20 +26,20 @@ class Log4cplusConan(ConanFile):
             del self.options.fPIC
 
     def source(self):
-        source_url = "https://github.com/log4cplus/log4cplus"
-        archive_name = "REL_{}".format(self.version.replace(".","_"))
-        tools.get("{0}/archive/{1}.tar.gz".format(source_url, archive_name))
-        extracted_dir = self.name + "-" + archive_name
-        os.rename(extracted_dir, self.source_subfolder)
+        
+        source_url = "https://downloads.sourceforge.net/project/log4cplus/log4cplus-stable"
+        archive_name = self.name + "-" + self.version
+        tools.get("{0}/2.0.0/{1}.zip".format(source_url, archive_name))
+        os.rename(archive_name, self.source_subfolder)
 
     def build(self):
         cmake = CMake(self)
         if self.settings.compiler != 'Visual Studio':
             cmake.definitions['CMAKE_POSITION_INDEPENDENT_CODE'] = self.options.fPIC
         cmake.configure(build_dir=self.build_subfolder)
-        cmake.definitions['LOG4CPLUS_BUILD_TESTING'] = 'False'
-        cmake.definitions['WITH_UNIT_TESTS'] = 'False'
-        cmake.definitions["LOG4CPLUS_ENABLE_DECORATED_LIBRARY_NAME"] = 'False'
+        cmake.definitions['LOG4CPLUS_BUILD_TESTING'] = 'Off'
+        cmake.definitions['WITH_UNIT_TESTS'] = 'Off'
+        cmake.definitions["LOG4CPLUS_ENABLE_DECORATED_LIBRARY_NAME"] = 'Off'
         cmake.build()
         cmake.install()
 
