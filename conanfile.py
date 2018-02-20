@@ -26,7 +26,6 @@ class Log4cplusConan(ConanFile):
             del self.options.fPIC
 
     def source(self):
-        
         source_url = "https://downloads.sourceforge.net/project/log4cplus/log4cplus-stable"
         archive_name = self.name + "-" + self.version
         tools.get("{0}/2.0.0/{1}.zip".format(source_url, archive_name))
