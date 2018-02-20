@@ -26,12 +26,11 @@ class Log4cplusConan(ConanFile):
             del self.options.fPIC
 
     def source(self):
-        source_url = "https://github.com/log4cplus/log4cplus"
-        archive_name = "REL_{}".format(self.version.replace(".","_"))
-        tools.get("{0}/archive/{1}.tar.gz".format(source_url, archive_name))
-        extracted_dir = self.name + "-" + archive_name
-        os.rename(extracted_dir, self.source_subfolder)
-
+        source_url = "https://downloads.sourceforge.net/project/log4cplus/log4cplus-stable"
+        archive_name = self.name + "-" + self.version
+        tools.get("{0}/1.2.1/{1}.zip".format(source_url, archive_name))
+        os.rename(archive_name, self.source_subfolder)
+        
     def build(self):
         cmake = CMake(self)
         if self.settings.compiler != 'Visual Studio':
