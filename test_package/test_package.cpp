@@ -1,14 +1,9 @@
-#include <log4cplus/helpers/loglog.h>
-#include <log4cplus/logger.h>
+#include <log4cplus/log4cplus.h>
 
-using namespace log4cplus::helpers;
-
-int main()
+int main (int argc, char* argv[])
 {
-	log4cplus::Initializer initializer;
-    LogLog::getLogLog()->debug(LOG4CPLUS_TEXT("This is a Debug statement..."));
-    LogLog::getLogLog()->debug(
-        log4cplus::tstring(LOG4CPLUS_TEXT("This is a Debug statement...")));
+    log4cplus::Initializer initializer;
+    int result = 0;
 
-    return 0;
+    return result;
 }
