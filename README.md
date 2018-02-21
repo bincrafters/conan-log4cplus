@@ -1,7 +1,7 @@
 ## Package Status
 
-| Bintray | Appveyor | Travis | 
-|---------|-----------|--------|
+| Bintray | Windows | Linux & macOS | 
+|:--------:|:---------:|:-----------------:|
 |[ ![Download](https://api.bintray.com/packages/bincrafters/public-conan/log4cplus%3Abincrafters/images/download.svg) ](https://bintray.com/bincrafters/public-conan/log4cplus%3Abincrafters/_latestVersion)|[![Build status](https://ci.appveyor.com/api/projects/status/github/bincrafters/conan-log4cplus?svg=true)](https://ci.appveyor.com/project/BinCrafters/conan-log4cplus)|[![Build Status](https://travis-ci.org/bincrafters/conan-log4cplus.svg)](https://travis-ci.org/bincrafters/conan-log4cplus)|
 
 ## Conan.io Information
