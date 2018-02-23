@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 from conans import ConanFile, CMake, tools
-from conans.errors import ConanException
 import os
 
 
@@ -48,21 +47,19 @@ class Log4cplusConan(ConanFile):
     def configure(self):
         if self.settings.compiler == 'Visual Studio':
             del self.options.fPIC
+            # Setting defaults to mimic CMakeLists.txt file
             self.options.working_c_locale = True
         else:
             self.options.working_c_locale = False
         
     def config_options(self):
-        if self.options.with_iconv == True:
-            raise ConanException('with_iconv option not currenltly supported')
-            # This seems to be for winiconv/windows not libiconv/mac
-            # If so, we need to refurbish lasotes winiconv pakage to support this options
-            #self.requires("iconv/0.0.0@bincrafters/stable")
+        if self.options.with_iconv:
+            self.requires("libiconv/1.15@bincrafters/stable")
 
     def source(self):
         source_url = "https://downloads.sourceforge.net/project/log4cplus/log4cplus-stable"
         archive_name = self.name + "-" + self.version
-        tools.get("{0}/1.2.1/{1}.zip".format(source_url, archive_name))
+        tools.get("{0}/{1}/{2}.zip".format(source_url, self.version, archive_name))
         os.rename(archive_name, self.source_subfolder)
         
     def build(self):
