@@ -11,6 +11,7 @@ class Log4cplusConan(ConanFile):
     version = "1.2.1"
     description = "simple to use C++ logging API, modelled after the Java log4j API"
     url = "https://github.com/bincrafters/conan-log4cplus"
+    homepage = "https://downloads.sourceforge.net/project/log4cplus/log4cplus-stable"
     license = "BSD 2-clause, Apache-2.0"
     exports = ["LICENSE.md"]
     exports_sources = ["CMakeLists.txt"]
