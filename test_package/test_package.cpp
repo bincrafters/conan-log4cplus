@@ -1,6 +1,9 @@
 #include <iostream>
 #include <log4cplus/helpers/loglog.h>
 #include <log4cplus/logger.h>
+#ifdef WITH_ICONV
+#include <log4cplus/tchar.h>
+#endif
 
 using namespace std;
 using namespace log4cplus::helpers;
@@ -36,6 +39,11 @@ int main()
     cout << "Turning on quiet mode..." << endl;
     LogLog::getLogLog()->setQuietMode(true);
     printMsgs();
+
+#ifdef WITH_ICONV
+    std::wstring wstr = log4cplus::helpers::towstring("test");
+    std::string str = log4cplus::helpers::tostring(L"test");
+#endif
 
     return 0;
 }

@@ -11,6 +11,7 @@ class TestPackageConan(ConanFile):
 
     def build(self):
         cmake = CMake(self)
+        cmake.definitions['WITH_ICONV'] = self.options['log4cplus'].with_iconv
         cmake.configure()
         cmake.build()
 
