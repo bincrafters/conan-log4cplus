@@ -58,7 +58,7 @@ class Log4cplusConan(ConanFile):
     def source(self):
         source_url = "https://downloads.sourceforge.net/project/log4cplus/log4cplus-stable"
         archive_name = self.name + "-" + self.version
-        tools.get("{0}/1.2.1/{1}.zip".format(source_url, archive_name))
+        tools.get("{0}/{1}/{2}.zip".format(source_url, self.version, archive_name))
         os.rename(archive_name, self.source_subfolder)
 
     def build(self):
