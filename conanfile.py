@@ -43,7 +43,7 @@ class Log4cplusConan(ConanFile):
 
     def requirements(self):
         if self.options.with_iconv:
-            self.requires('libiconv/1.15@bincrafters/stable')
+            self.requires.add('libiconv/1.15@bincrafters/stable')
 
     def config_options(self):
         if self.settings.compiler == 'Visual Studio':
@@ -65,9 +65,9 @@ class Log4cplusConan(ConanFile):
         cmake = CMake(self)
         if self.settings.compiler != 'Visual Studio':
             cmake.definitions['CMAKE_POSITION_INDEPENDENT_CODE'] = self.options.fPIC
-        cmake.configure(build_dir=self.build_subfolder)
-        cmake.definitions['LOG4CPLUS_BUILD_TESTING'] = 'False'
-        cmake.definitions['WITH_UNIT_TESTS'] = 'False'
+
+        cmake.definitions['LOG4CPLUS_BUILD_TESTING'] = False
+        cmake.definitions['WITH_UNIT_TESTS'] = False
         cmake.definitions["LOG4CPLUS_ENABLE_DECORATED_LIBRARY_NAME"] = self.options.decorated_name
         cmake.definitions['LOG4CPLUS_QT4'] = self.options.qt4_debug_appender
         cmake.definitions['LOG4CPLUS_QT5'] = self.options.qt5_debug_appender
@@ -76,6 +76,8 @@ class Log4cplusConan(ConanFile):
         cmake.definitions['WITH_ICONV'] = self.options.with_iconv
         cmake.definitions['LOG4CPLUS_WORKING_LOCALE'] = self.options.working_locale
         cmake.definitions['LOG4CPLUS_WORKING_C_LOCALE'] = self.options.working_c_locale
+
+        cmake.configure(build_dir=self.build_subfolder)
         cmake.build()
         cmake.install()
 
