@@ -19,6 +19,7 @@ if [[ "$(uname -s)" == 'Darwin' ]]; then
     pyenv rehash
     pyenv activate conan
 else
+	sudo apt-get update
 	sudo apt-get install -y nasm autoconf dh-autoreconf
 fi
 
