@@ -8,9 +8,10 @@ import os
 
 class Log4cplusConan(ConanFile):
     name = "log4cplus"
-    version = "2.0.1"
+    version = "2.0.2"
     description = "simple to use C++ logging API, modelled after the Java log4j API"
     url = "https://github.com/bincrafters/conan-log4cplus"
+    author = "Bincrafters <bincrafters@gmail.com>"
     license = "BSD 2-clause, Apache-2.0"
     exports = ["LICENSE.md"]
     exports_sources = ["CMakeLists.txt"]
