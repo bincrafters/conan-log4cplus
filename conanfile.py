@@ -1,9 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
-from conans import ConanFile, CMake, tools
-from conans.errors import ConanException
 import os
+from conans import ConanFile, CMake, tools
+from conans.errors import ConanInvalidConfiguration
 
 
 class Log4cplusConan(ConanFile):
@@ -11,13 +10,13 @@ class Log4cplusConan(ConanFile):
     version = "2.0.2"
     description = "simple to use C++ logging API, modelled after the Java log4j API"
     url = "https://github.com/bincrafters/conan-log4cplus"
+    homepage = "https://github.com/log4cplus/log4cplus"
+    topics = ("conan", "log4cplus", "logging", "log", "logging-library")
     author = "Bincrafters <bincrafters@gmail.com>"
-    license = "BSD 2-clause, Apache-2.0"
+    license = ("BSD-2-Clause, Apache-2.0")
     exports = ["LICENSE.md"]
     exports_sources = ["CMakeLists.txt"]
     generators = 'cmake'
-    source_subfolder = "source_subfolder"
-    build_subfolder = "build_subfolder"
     settings = 'os', 'compiler', 'build_type', 'arch'
     options = {'shared': [True, False],
                "fPIC": [True, False],
@@ -29,17 +28,19 @@ class Log4cplusConan(ConanFile):
                "decorated_name": [True, False],
                "qt4_debug_appender": [True, False],
                "qt5_debug_appender": [True, False]}
-    default_options = ('shared=False',
-                       'fPIC=True',
-                       "single_threaded=False",
-                       "build_logging_server=False",
-                       "with_iconv=False",
-                       "working_locale=False",
-                       "working_c_locale=False",
-                       "decorated_name=False",
-                       "qt4_debug_appender=False",
-                       "qt5_debug_appender=False")
+    default_options = {'shared': False,
+                       'fPIC': True,
+                       'single_threaded': False,
+                       'build_logging_server': False,
+                       'with_iconv': False,
+                       'working_locale': False,
+                       'working_c_locale': False,
+                       'decorated_name': False,
+                       'qt4_debug_appender': False,
+                       'qt5_debug_appender': False}
     short_paths = True
+    _source_subfolder = "source_subfolder"
+    _build_subfolder = "build_subfolder"
 
     def requirements(self):
         if self.options.with_iconv:
@@ -51,22 +52,19 @@ class Log4cplusConan(ConanFile):
 
     def configure(self):
         if self.options.qt4_debug_appender:
-            raise ConanException('Qt4 debug appender is not supported yet!')
+            raise ConanInvalidConfiguration('Qt4 debug appender is not supported yet!')
         if self.options.qt5_debug_appender:
-            raise ConanException('Qt5 debug appender is not supported yet!')
+            raise ConanInvalidConfiguration('Qt5 debug appender is not supported yet!')
 
     def source(self):
-        source_url = "https://downloads.sourceforge.net/project/log4cplus/log4cplus-stable"
         archive_name = self.name + "-" + self.version
-        version_trimmed = self.version.replace("-rc2","")
-        tools.get("{0}/{1}/{2}.zip".format(source_url, version_trimmed, archive_name))
-        os.rename(archive_name, self.source_subfolder)
+        sha256 = "10539f2315271d370c7bc6a2b4808cbe369279837f4539ce5c789e456489fc62"
+        tools.get("{}/releases/download/REL_{}/{}.tar.gz".format(
+                  self.homepage, self.version.replace(".", "_"), archive_name), sha256=sha256)
+        os.rename(archive_name, self._source_subfolder)
 
-    def build(self):
+    def _configure_cmake(self):
         cmake = CMake(self)
-        if self.settings.compiler != 'Visual Studio':
-            cmake.definitions['CMAKE_POSITION_INDEPENDENT_CODE'] = self.options.fPIC
-
         cmake.definitions['LOG4CPLUS_BUILD_TESTING'] = False
         cmake.definitions['WITH_UNIT_TESTS'] = False
         cmake.definitions["LOG4CPLUS_ENABLE_DECORATED_LIBRARY_NAME"] = self.options.decorated_name
@@ -77,13 +75,17 @@ class Log4cplusConan(ConanFile):
         cmake.definitions['WITH_ICONV'] = self.options.with_iconv
         cmake.definitions['LOG4CPLUS_WORKING_LOCALE'] = self.options.working_locale
         cmake.definitions['LOG4CPLUS_WORKING_C_LOCALE'] = self.options.working_c_locale
+        cmake.configure(build_dir=self._build_subfolder)
+        return cmake
 
-        cmake.configure(build_dir=self.build_subfolder)
+    def build(self):
+        cmake = self._configure_cmake()
         cmake.build()
-        cmake.install()
 
     def package(self):
-        self.copy(pattern="LICENSE", dst="licenses", src=self.source_subfolder)
+        self.copy(pattern="LICENSE", dst="licenses", src=self._source_subfolder)
+        cmake = self._configure_cmake()
+        cmake.install()
 
     def package_info(self):
         self.cpp_info.libs = tools.collect_libs(self)
