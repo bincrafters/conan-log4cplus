@@ -7,7 +7,7 @@ from conans.errors import ConanInvalidConfiguration
 
 class Log4cplusConan(ConanFile):
     name = "log4cplus"
-    version = "2.0.2"
+    version = "2.0.3"
     description = "simple to use C++ logging API, modelled after the Java log4j API"
     url = "https://github.com/bincrafters/conan-log4cplus"
     homepage = "https://github.com/log4cplus/log4cplus"
