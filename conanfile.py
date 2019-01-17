@@ -8,7 +8,7 @@ import os
 
 class Log4cplusConan(ConanFile):
     name = "log4cplus"
-    version = "2.0.1"
+    version = "2.0.0"
     description = "simple to use C++ logging API, modelled after the Java log4j API"
     url = "https://github.com/bincrafters/conan-log4cplus"
     homepage = "https://github.com/log4cplus/log4cplus"
@@ -63,7 +63,7 @@ class Log4cplusConan(ConanFile):
 
     def source(self):
         archive_name = self.name + "-" + self.version
-        sha256 = "82639d39544510c52cd94073c2e8b89eb2407d070df6d6912b52762996d93b48"
+        sha256 = "cd10e355a30ffe0710e3319a011925889ffd78d61d15217d477cb2890217dba2"
         tools.get("{}/releases/download/REL_{}/{}.zip".format(self.homepage, self.version.replace(".", "_"), archive_name), sha256=sha256)
         os.rename(archive_name, self._source_subfolder)
 
