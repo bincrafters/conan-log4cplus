@@ -8,7 +8,7 @@ import os
 
 class Log4cplusConan(ConanFile):
     name = "log4cplus"
-    version = "2.0.0"
+    version = "2.0.0-rc2"
     description = "simple to use C++ logging API, modelled after the Java log4j API"
     url = "https://github.com/bincrafters/conan-log4cplus"
     homepage = "https://github.com/log4cplus/log4cplus"
@@ -62,9 +62,11 @@ class Log4cplusConan(ConanFile):
             raise ConanInvalidConfiguration('Qt5 debug appender is not supported yet!')
 
     def source(self):
+        source_url = "https://downloads.sourceforge.net/project/log4cplus/log4cplus-stable"
         archive_name = self.name + "-" + self.version
-        sha256 = "cd10e355a30ffe0710e3319a011925889ffd78d61d15217d477cb2890217dba2"
-        tools.get("{}/releases/download/REL_{}/{}.zip".format(self.homepage, self.version.replace(".", "_"), archive_name), sha256=sha256)
+        version_trimmed = self.version.replace("-rc2","")
+        sha256 = "4db87aff380ff5c1dcb6ab9df9c435c9591d9ecd446c343e099a9c77bd93a314"
+        tools.get("{0}/{1}/{2}.zip".format(source_url, version_trimmed, archive_name), sha256=sha256)
         os.rename(archive_name, self._source_subfolder)
 
     def _configure_cmake(self):
