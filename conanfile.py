@@ -77,6 +77,11 @@ class Log4cplusConan(ConanFile):
         cmake.definitions['LOG4CPLUS_WORKING_LOCALE'] = self.options.working_locale
         cmake.definitions['LOG4CPLUS_WORKING_C_LOCALE'] = self.options.working_c_locale
 
+        if self.settings.os == 'Android':
+            cmake.definitions['CONAN_CMAKE_FIND_ROOT_PATH_MODE_PROGRAM'] = 'ONLY'
+            cmake.definitions['CONAN_CMAKE_FIND_ROOT_PATH_MODE_LIBRARY'] = 'ONLY'
+            cmake.definitions['CONAN_CMAKE_FIND_ROOT_PATH_MODE_INCLUDE'] = 'ONLY'
+
         cmake.configure(build_dir=self.build_subfolder)
         cmake.build()
         cmake.install()
