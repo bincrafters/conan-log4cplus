@@ -27,7 +27,8 @@ class Log4cplusConan(ConanFile):
                "working_c_locale": [True, False],
                "decorated_name": [True, False],
                "qt4_debug_appender": [True, False],
-               "qt5_debug_appender": [True, False]}
+               "qt5_debug_appender": [True, False],
+               "unicode": [True, False]}
     default_options = {'shared': False,
                        'fPIC': True,
                        'single_threaded': False,
@@ -37,7 +38,8 @@ class Log4cplusConan(ConanFile):
                        'working_c_locale': False,
                        'decorated_name': False,
                        'qt4_debug_appender': False,
-                       'qt5_debug_appender': False}
+                       'qt5_debug_appender': False,
+                       'unicode': False}
     short_paths = True
     _source_subfolder = "source_subfolder"
     _build_subfolder = "build_subfolder"
@@ -75,6 +77,7 @@ class Log4cplusConan(ConanFile):
         cmake.definitions['WITH_ICONV'] = self.options.with_iconv
         cmake.definitions['LOG4CPLUS_WORKING_LOCALE'] = self.options.working_locale
         cmake.definitions['LOG4CPLUS_WORKING_C_LOCALE'] = self.options.working_c_locale
+        cmake.definitions['UNICODE'] = self.options.unicode
         cmake.configure(build_dir=self._build_subfolder)
         return cmake
 
