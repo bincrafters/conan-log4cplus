@@ -8,10 +8,13 @@ import os
 class TestPackageConan(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
     generators = "cmake"
+    options = {"unicode": [True, False]}
+    default_options = ("unicode=False")
 
     def build(self):
         cmake = CMake(self)
         cmake.definitions['WITH_ICONV'] = self.options['log4cplus'].with_iconv
+        cmake.definitions['UNICODE'] = self.options['log4cplus'].unicode
         cmake.configure()
         cmake.build()
 
