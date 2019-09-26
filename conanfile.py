@@ -44,7 +44,7 @@ class Log4cplusConan(ConanFile):
 
     def requirements(self):
         if self.options.with_iconv:
-            self.requires.add('libiconv/1.15@bincrafters/stable')
+            self.requires.add('libiconv/1.15')
 
     def config_options(self):
         if self.settings.compiler == 'Visual Studio':
