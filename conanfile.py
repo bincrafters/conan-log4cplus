@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 import os
 from conans import ConanFile, CMake, tools
 from conans.errors import ConanInvalidConfiguration
@@ -12,7 +10,6 @@ class Log4cplusConan(ConanFile):
     url = "https://github.com/bincrafters/conan-log4cplus"
     homepage = "https://github.com/log4cplus/log4cplus"
     topics = ("conan", "log4cplus", "logging", "log", "logging-library")
-    author = "Bincrafters <bincrafters@gmail.com>"
     license = ("BSD-2-Clause, Apache-2.0")
     exports = ["LICENSE.md"]
     exports_sources = ["CMakeLists.txt"]
